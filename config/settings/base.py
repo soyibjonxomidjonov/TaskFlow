@@ -13,19 +13,23 @@ import os
 import sys
 from datetime import timedelta
 from pathlib import Path
+from dotenv import load_dotenv
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
+
+load_dotenv()
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-8+w7iw@a00uqb2!zrhi^bjh5gpmikaj83e%lt-ad9n#h4-$i2^'
+SECRET_KEY = os.getenv('SECRET_KEY', 'secret_key123')
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DEBUG', 'False').lower() in ('true', '1', 'yes')
 
 ALLOWED_HOSTS = ['*']
 
@@ -88,30 +92,6 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
-
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql', #bu postgres ulanish
-#         'NAME': os.environ.get("DATABASE_NAME"),# database nomi
-#         'USER': os.environ.get('DATABASE_USER'), #user nomi
-#         'PASSWORD': os.environ.get('USER_PASSWORD'), #user paroli
-#         'HOST': os.environ.get("DATABASE_HOST"), #bu yerda host beriladi
-#         'PORT': os.environ.get('PORT'), #va post yoziladi va tayyor
-#     }
-# }
-# if 'test' in sys.argv:
-#     DATABASES['default'] = {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': ':memory:',
-#     }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators
@@ -148,7 +128,19 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
+# Static fayllar uchun (CSS, JS, rasmlar - loyiha dizayni uchun)
 STATIC_URL = 'static/'
+STATIC_DIR = os.path.join(BASE_DIR, 'static')
+STATICFILES_DIRS = [STATIC_DIR] if os.path.exists(STATIC_DIR) else []
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+
+
+# Media fayllar uchun (Foydalanuvchi yuklagan rasmlar - mahsulot rasmi, avatar)
+MEDIA_URL = 'media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+
 
 
 
@@ -180,14 +172,14 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')  # Sizning email manzilingiz
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')  # Sizning email parolingiz
 
-DEFAULT_FROM_EMAIL = os.environ.get('EMAIL_HOST_USER')  # qo'shing
+DEFAULT_FROM_EMAIL = os.environ.get('EMAIL_HOST_USER')
 
 DJOSER = {
     'PASSWORD_RESET_CONFIRM_URL': 'v1/auth/users/reset_password_confirm/?uid={uid}&token={token}',
     'USERNAME_RESET_CONFIRM_URL': 'username/reset/confirm/{uid}/{token}',
     'ACTIVATION_URL': 'activate/{uid}/{token}',
     'SEND_ACTIVATION_EMAIL': True,
-    'SEND_PASSWORD_RESET_EMAIL': True,  # qo'shing
+    'SEND_PASSWORD_RESET_EMAIL': True,
     'PERMISSIONS': {
         'password_reset': ['rest_framework.permissions.AllowAny'],
         'password_reset_confirm': ['rest_framework.permissions.AllowAny'],

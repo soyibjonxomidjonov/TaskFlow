@@ -46,7 +46,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     role = models.CharField(max_length=50, choices=Role.choices, default=Role.MANAGER)
 
-    data_joined = models.DateTimeField(default=timezone.now)
+    date_joined = models.DateTimeField(default=timezone.now)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
 
@@ -64,4 +64,4 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     class Meta:
         verbose_name = 'Foydalanuvchi'
         verbose_name_plural = 'Foydalanuvchilar'
-        ordering = ['-data_joined']
+        ordering = ['-date_joined']
