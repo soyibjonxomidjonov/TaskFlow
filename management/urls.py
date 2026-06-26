@@ -11,7 +11,7 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
     TokenVerifyView
 )
-
+from management.views import UserViewSet, EmployeeViewSet, TaskViewSet
 
 
 
@@ -44,7 +44,9 @@ schema_view = get_schema_view(
 
 router = DefaultRouter()
 
-# router.register(r'users', UserViewSet)
+router.register(r'users', UserViewSet, basename='user')
+router.register(r'employees', EmployeeViewSet, basename='employee')
+router.register(r'tasks', TaskViewSet, basename='task')
 
 
 urlpatterns = [
