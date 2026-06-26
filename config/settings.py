@@ -47,6 +47,8 @@ INSTALLED_APPS = [
     'drf_yasg',
     'rest_framework_simplejwt',
     'djoser',
+
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
@@ -129,6 +131,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTH_USER_MODEL = 'management.CustomUser'
 
 # Internationalization
 # https://docs.djangoproject.com/en/6.0/topics/i18n/
@@ -190,6 +193,6 @@ DJOSER = {
         'password_reset_confirm': ['rest_framework.permissions.AllowAny'],
     },
     'SERIALIZERS': {
-        'password_reset': 'products.serializers.user_serializer.CustomPasswordResetSerializer',
+        'password_reset': 'management.serializers.user_serializer.CustomPasswordResetSerializer',
     },
 }
